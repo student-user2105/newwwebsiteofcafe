@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pure Moonlight Café — Luxury Full Menu</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --gold:#D4AF37;        /* primary gold */
+      --gold-soft:#E6C76A;   /* soft gold */
+      --bg1:#07120f;         /* darkest */
+      --bg2:#0b2420;         /* deep green */
+      --card:#0e1d1a;
+      --muted:#d7d7d7;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Montserrat, sans-serif;background:linear-gradient(180deg,var(--bg2),var(--bg1));color:var(--muted);-webkit-font-smoothing:antialiased;line-height:1.45}
+    a{color:var(--gold);text-decoration:none}
+
+    /* NAV */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:1200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 26px;background:linear-gradient(90deg, rgba(2,2,2,0.35), rgba(0,0,0,0.18));
+      border-bottom:1px solid rgba(212,175,55,0.08);
+      backdrop-filter: blur(6px);
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand img{height:52px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.6))}
+    .brand .title{font-family:Cinzel, serif;color:var(--gold);font-size:18px;letter-spacing:1px}
+    .nav .links{display:flex;gap:18px;align-items:center}
+    .nav .links a{font-weight:600;padding:8px 10px;border-radius:8px;transition:0.18s}
+    .nav .links a:hover{background:rgba(212,175,55,0.06);color:var(--muted)}
+    .nav .cta{background:var(--gold);color:#07120f;padding:8px 12px;border-radius:999px;font-weight:700;margin-left:12px}
+
+    /* HERO */
+    .hero{min-height:66vh;display:flex;align-items:center;justify-content:center;padding-top:80px;position:relative;background-image:url('https://images.unsplash.com/photo-1541542684-6e7dbe2f6d51?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&s=2b2d3d2f2c7e2d7b4b2e');background-size:cover;background-position:center}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(4,4,4,0.6), rgba(4,4,4,0.62));mix-blend-mode:multiply}
+    .hero-inner{position:relative;z-index:2;max-width:1100px;padding:28px;margin:10px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));border-left:4px solid rgba(212,175,55,0.12);box-shadow:0 14px 40px rgba(2,2,2,0.6);display:flex;gap:22px;align-items:center}
+    .hero-left{flex:0 0 220px;display:flex;align-items:center;justify-content:center}
+    .hero-left img{width:180px;border-radius:12px;object-fit:cover;filter:contrast(1.03) saturate(1.05)}
+    .hero-right{flex:1}
+    .hero h1{font-family:Cinzel, serif;color:var(--gold);font-size:44px;margin:0 0 10px;letter-spacing:2px}
+    .hero p{font-size:16px;color:#e8e8e8;margin:0 0 14px}
+    .btn-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:10px 18px;border-radius:999px;border:2px solid var(--gold);color:var(--gold);background:transparent;font-weight:700;transition:all .22s}
+    .btn:hover{background:var(--gold);color:#07120f}
+
+    /* SECTIONS */
+    .section{max-width:1200px;margin:28px auto;padding:18px}
+    .section .head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:12px}
+    .section h2{font-family:Cinzel, serif;color:var(--gold);font-size:26px;margin:0}
+    .section p.desc{color:#d0d0d0;margin:6px 0 0;font-size:14px}
+
+    /* menu dense layout */
+    .menu-wrap{display:grid;grid-template-columns:1fr 340px;gap:20px}
+    @media(max-width:980px){.menu-wrap{grid-template-columns:1fr}}
+    .menu-left{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    @media(max-width:900px){.menu-left{grid-template-columns:1fr}}
+    .menu-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.04));padding:14px;border-radius:12px;border:1px solid rgba(212,175,55,0.07);box-shadow:0 8px 22px rgba(3,3,3,0.45);transition:0.25s}
+    .menu-card:hover{transform:translateY(-6px);border-color:var(--gold)}
+    .menu-card h3{font-family:Cinzel,serif;color:var(--gold);font-size:18px;margin-bottom:8px}
+    .menu-card ul{list-style:none;padding:0;margin:0;max-height:330px;overflow:auto}
+    .menu-card li{display:flex;justify-content:space-between;padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.03);font-size:14px}
+    .menu-card li span.name{max-width:70%}
+    .price{color:var(--gold-soft);font-weight:700}
+
+    /* right sidebar */
+    .menu-right{display:flex;flex-direction:column;gap:14px}
+    .aboutbox{background:var(--glass);padding:14px;border-radius:12px;border-left:4px solid rgba(212,175,55,0.14)}
+    .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .gallery img{width:100%;height:90px;object-fit:cover;border-radius:8px}
+
+    /* compact footer & contact */
+    .contact-cta{background:linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.02));padding:12px;border-radius:10px;border:1px solid rgba(212,175,55,0.06)}
+    footer{padding:18px;text-align:center;color:#d6d6d6;font-size:14px;margin-top:18px;border-top:1px solid rgba(255,255,255,0.03)}
+
+    /* scrollbar small */
+    .menu-card ul::-webkit-scrollbar{width:6px}
+    .menu-card ul::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),var(--gold-soft));border-radius:12px}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="brand">
+      <!-- if you have logo file: replace src with "logo.png" --> 
+      <img src="logo2-removebg-preview.png">
+      <div>
+        <div class="title">PURE MOONLIGHT CAFÉ</div>
+        <div style="font-size:12px;color:#cfcfcf">Where Taste Meets Luxury</div>
+      </div>
+    </div>
+
+    <div class="links">
+      <a href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#contact">Contact</a>
+      <a class="cta" href="#menu">Order / Book</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home" style="padding-top:92px">
+    <div class="hero-inner" role="banner">
+      <div class="hero-left">
+        <img src="https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=9f4af1a4f2b5c9e5e1b4" alt="dish">
+      </div>
+      <div class="hero-right">
+        <h1>PURE MOONLIGHT CAFÉ</h1>
+        <p>Newly opened — premium vegetarian cafe with moonlit ambience. Handcrafted pizzas, gourmet burgers, artisanal coffees, indulgent shakes, and freshly made desserts. Perfect for cozy evenings and Insta-worthy bites.</p>
+        <div class="btn-row">
+          <a class="btn" href="#menu">Explore Full Menu</a>
+          <a class="btn" href="#contact">Reserve a Table</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section class="section" id="menu">
+    <div class="head">
+      <div>
+        <h2>Our Full Menu</h2>
+        <p class="desc">Complete vegetarian menu — priced affordably. Scroll any category to view all items. (Tap a category on mobile to jump)</p>
+      </div>
+    </div>
+
+    <div class="menu-wrap">
+      <!-- LEFT: large menu columns -->
+      <div class="menu-left">
+
+        <!-- SIGNATURE PIZZAS -->
+        <div class="menu-card">
+          <h3>🥂 SIGNATURE VEG PIZZAS</h3>
+          <ul>
+            <li><span class="name">Classic Veg Pizza</span><span class="price"> nope</span></li>
+            <li><span class="name">Onion Capsicum Delight</span><span class="price">nope</span></li>
+            <li><span class="name">Corn & Cheese Special</span><span class="price">NM</span></li>
+            <li><span class="name">Paneer Tikka Pizza</span><span class="price">Nm</span></li>
+            <li><span class="name">Farmhouse Special</span><span class="price">NM</span></li>
+            <!-- <li><span class="name">Truffle Mushroom (Chef Recommend)</span><span class="price">₹399</span></li> -->
+            <!-- <li><span class="name">BBQ Paneer Supreme</span><span class="price">₹359</span></li> -->
+            <li><span class="name" style="font-weight:600">Extras: Extra Cheese / Olives / Jalapenos</span><span class="price">NM</span></li>
+          </ul>
+        </div>
+
+        <!-- BURGERS -->
+        <div class="menu-card">
+          <h3>🍔 GOURMET BURGERS & WRAPS</h3>
+          <ul>
+            <li><span class="name">Veg Supreme Burger</span><span class="price">Nm</span></li>
+            <li><span class="name">Paneer Royale Burger</span><span class="price">NM</span></li>
+            <li><span class="name">Cheese Burst Special</span><span class="price">NM</span></li>
+            <li><span class="name">Aloo-Tikki Classic</span><span class="price">NM</span></li>
+            <li><span class="name">Falafel Wrap</span><span class="price">NM</span></li>
+            <!-- <li><span class="name">Mexican Bean Burger</span><span class="price">₹199</span></li> -->
+            <li><span class="name">Double Patty Upgrade</span><span class="price">NM</span></li>
+          </ul>
+        </div>
+
+        <!-- SANDWICHES & ROLLS -->
+        <div class="menu-card">
+          <h3>🥪 SANDWICHES & ROLLS</h3>
+          <ul>
+            <li><span class="name">Veg Grilled Sandwich</span><span class="price">NM</span></li>
+            <li><span class="name">Paneer Grilled Sandwich</span><span class="price">NM</span></li>
+            <li><span class="name">Club Premium Sandwich</span><span class="price">NM</span></li>
+            <li><span class="name">Cheese Layered Sandwich</span><span class="price">NM</span></li>
+            <li><span class="name">Veg Roll / Paneer Roll</span><span class="price">NM</span></li>
+            <!-- <li><span class="name">Crispy Paneer Wrap</span><span class="price">₹159</span></li> -->
+          </ul>
+        </div>
+
+        <!-- SIDES & STARTERS -->
+        <div class="menu-card">
+          <h3>🍟 SIDES & STARTERS</h3>
+          <ul>
+            <li><span class="name">French Fries (Regular / Large)</span><span class="price">nm</span></li>
+            <li><span class="name">Peri-Peri Fries</span><span class="price">nm</span></li>
+            <li><span class="name">Potato Wedges</span><span class="price">nm</span></li>
+            <li><span class="name">Garlic Bread</span><span class="price">nm</span></li>
+            <li><span class="name">Cheese Garlic Bread</span><span class="price">nm</span></li>
+            <li><span class="name">Nachos with Dip</span><span class="price">nm</span></li>
+            <!-- <li><span class="name">Veg Tempura (Seasonal)</span><span class="price">₹169</span></li> -->
+          </ul>
+        </div>
+
+        <!-- RICE & BOWLS -->
+        <!-- <div class="menu-card">
+          <h3>🍚 RICE BOWLS & MAINS</h3>
+          <ul>
+            <li><span class="name">Veg Teriyaki Rice Bowl</span><span class="price">₹199</span></li>
+            <li><span class="name">Paneer Schezwan Rice</span><span class="price">₹219</span></li>
+            <li><span class="name">Mexican Rice Bowl</span><span class="price">₹209</span></li>
+            <li><span class="name">Creamy Pesto Pasta</span><span class="price">₹229</span></li>
+            <li><span class="name">Arrabiata Penne</span><span class="price">₹219</span></li>
+          </ul>
+        </div> -->
+
+        <!-- DESSERTS -->
+        <div class="menu-card">
+          <h3>🍰 DESSERT BAR</h3>
+          <ul>
+            <li><span class="name">Brownie</span><span class="price">nm</span></li>
+            <li><span class="name">Brownie with Ice-Cream</span><span class="price">nm</span></li>
+            <!-- <li><span class="name">Mochi Ice-Cream (2 pcs)</span><span class="price">₹129</span></li>
+            <li><span class="name">Sakura Cheesecake (Seasonal)</span><span class="price">₹179</span></li> -->
+            <li><span class="name">Ice-Cream Scoops (Vanilla/Choco/Strawberry)</span><span class="price">nm</span></li>
+          </ul>
+        </div>
+
+        <!-- BEVERAGES LONG LIST -->
+        <div class="menu-card">
+          <h3>☕ ARTISAN COFFEE & TEAS</h3>
+          <ul>
+            <li><span class="name">Espresso</span><span class="price">nm</span></li>
+            <!-- <li><span class="name">Double Espresso</span><span class="price">₹149</span></li> -->
+            <!-- <li><span class="name">Americano</span><span class="price">₹119</span></li> -->
+            <li><span class="name">Cappuccino</span><span class="price">n,</span></li>
+            <!-- <li><span class="name">Latte</span><span class="price">₹139</span></li> -->
+            <li><span class="name">Mocha Deluxe</span><span class="price">nm</span></li>
+            <li><span class="name">Cold / Iced Coffee</span><span class="price">nm</span></li>
+            <li><span class="name">Hot Chocolate</span><span class="price">nm</span></li>
+            <li><span class="name">Green Tea</span><span class="price">nm</span></li>
+            <li><span class="name">Masala Chai</span><span class="price">nm</span></li>
+          </ul>
+        </div>
+
+        <!-- SHAKES & COOLERS -->
+        <div class="menu-card">
+          <h3>🥤 SHAKES & COOLERS</h3>
+          <ul>
+            <li><span class="name">Chocolate Shake</span><span class="price">nm</span></li>
+            <li><span class="name">Oreo Shake</span><span class="price">nm</span></li>
+            <li><span class="name">Vanilla Classic</span><span class="price">nm</span></li>
+            <li><span class="name">Strawberry Shake</span><span class="price">nm</span></li>
+            <li><span class="name">Mango Shake (Seasonal)</span><span class="price">nm</span></li>
+            <li><span class="name">Blackcurrant / Blue Mojito</span><span class="price">nm</span></li>
+            <li><span class="name">Fresh Fruit Cooler</span><span class="price">nm</span></li>
+             <li><span class="name">Mojito (Classic/mint/blue)</span><span class="price">nm</span></li>
+             <li><span class="name">Soft Drinks / Minerals Water</span><span class="price">nm</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: sidebar with about, gallery, specials -->
+      <aside class="menu-right">
+        <div class="aboutbox">
+          <strong style="color:var(--gold)">Pure Moonlight Highlights</strong>
+          <p class="muted" style="margin:6px 0 0;font-size:14px">
+            Newly opened. 100% vegetarian. Hygiene-certified kitchen. Private bookings and catering available. Ask for chef recommendations.
+          </p>
+        </div>
+
+        <div class="menu-card">
+          <h3>🔥 PURE MOONLIGHT SPECIALS</h3>
+          <ul>
+            <li><span class="name">Moonlight Ramen (Veg)</span><span class="price">₹249</span></li>
+            <li><span class="name">Signature Mocktail – Pure Moon</span><span class="price">₹149</span></li>
+            <li><span class="name">Artisanal Truffle Fries</span><span class="price">₹169</span></li>
+            <li><span class="name">Gourmet Paneer Steak</span><span class="price">₹329</span></li>
+          </ul>
+        </div>
+
+        <div class="menu-card">
+          <h3>📸 Gallery</h3>
+          <div class="gallery">
+            <img src="https://tse4.mm.bing.net/th/id/OIP.a9nBznwHfupwjQRk4R80wAHaE8?pid=Api&P=0&h=180" alt="g1">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.-Z5U1y8dLL1tZjfRNpCQ9QHaEf?pid=Api&P=0&h=180" alt="g2">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.7oWJTDQbmZ8gWxY17GOqNgHaFS?pid=Api&P=0&h=180" alt="g3">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.WHbfFKasvrUW_lysIsLg-wAAAA?pid=Api&P=0&h=180" alt="g4">
+          </div>
+        </div>
+
+        <div class="aboutbox contact-cta">
+          <strong style="color:var(--gold)">Reserve / Contact</strong>
+          <p class="muted" style="margin:6px 0 0;font-size:14px">
+            Call: <strong style="color:#fff">7248000318</strong><br>
+            IG: <a href="https://instagram.com/puremoonlight_cafe" target="_blank">@puremoonlight_cafe</a><br>
+            Timing: 10 AM – 11 PM
+          </p>
+        </div>
+
+      </aside>
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact" style="padding-top:12px;padding-bottom:40px">
+    <div style="max-width:1000px;margin:0 auto">
+      <h2 style="text-align:left">Contact & Booking</h2>
+      <p class="desc" style="text-align:left">Book a private table or catering. Send a message on Instagram or call us to reserve your moonlit experience.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px">
+        <div class="menu-card">
+          <strong>Address</strong>
+          <p class="muted" style="margin-top:8px">[Add full address here]</p>
+          <strong style="margin-top:10px;display:block">Phone</strong>
+          <p style="margin-top:6px;color:#fff">7248000318</p>
+        </div>
+        <div class="menu-card">
+          <strong>Email / Booking</strong>
+          <p class="muted" style="margin-top:8px">booking@puremoonlightcafe.com (coming soon)</p>
+          <strong style="margin-top:10px;display:block">Follow</strong>
+          <p style="margin-top:6px;color:#fff"><a href="https://instagram.com/puremoonlight_cafe" target="_blank">@puremoonlight_cafe</a></p>
+        </div>
+      </div>
+    </div>
+    <!-- Add this inside your <body>, preferably after the #contact section -->
+
+<section class="section" id="booking" style="padding-top:12px;padding-bottom:50px">
+  <div style="max-width:1000px;margin:0 auto">
+    <h2 style="text-align:left">Online Booking</h2>
+    <p class="desc" style="text-align:left">Fill the form below to reserve your table. We'll confirm your booking via email!</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
+      <!-- Online Booking Form -->
+      <div class="menu-card">
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <label style="display:block;margin:8px 0 4px">Name</label>
+          <input type="text" name="name" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+
+          <label style="display:block;margin:8px 0 4px">Date & Time</label>
+          <input type="datetime-local" name="datetime" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+
+          <label style="display:block;margin:8px 0 4px">Number of People</label>
+          <input type="number" name="people" min="1" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+
+          <label style="display:block;margin:8px 0 4px">Table Type</label>
+          <select name="table_type" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+            <option value="">Select Table Type</option>
+            <option value="Indoor">Indoor</option>
+    
+            <option value="Private">Private</option>
+          </select>
+
+          <label style="display:block;margin:8px 0 4px">Special Request</label>
+          <textarea name="request" rows="3" placeholder="Any special requests?" style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff"></textarea>
+
+          <button type="submit" class="btn" style="margin-top:12px;width:100%;">Submit Booking</button>
+        </form>
+      </div>
+
+      <!-- Quick Booking -->
+      <div class="menu-card" style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;text-align:center">
+        <h3>Quick Booking</h3>
+        <p class="desc">Call or WhatsApp instantly to reserve your table.</p>
+        <a href="tel:+917248000318" style="display:block;padding:16px 20px;border-radius:12px;font-weight:700;color:#07120f;background:var(--gold);text-decoration:none;font-size:18px;transition:0.22s">📞 Call Now</a>
+        <a href="https://wa.me/917248000318" target="_blank" style="display:block;padding:16px 20px;border-radius:12px;font-weight:700;color:#07120f;background:var(--gold);text-decoration:none;font-size:18px;transition:0.22s">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+  <section class="section" id="feedback" style="padding-top:12px;padding-bottom:50px">
+  <div style="max-width:800px;margin:0 auto">
+    <h2 style="text-align:left">Customer Feedback</h2>
+    <p class="desc" style="text-align:left">We value your experience! Please leave your feedback below so we can serve you better.</p>
+
+    <div class="menu-card" style="margin-top:20px">
+      <form action="https://formspree.io/f/YOUR_FEEDBACK_FORM_ID" method="POST">
+        <label style="display:block;margin:8px 0 4px">Name</label>
+        <input type="text" name="name" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+
+        <label style="display:block;margin:8px 0 4px">Email</label>
+        <input type="email" name="email" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+
+        <label style="display:block;margin:8px 0 4px">Rating</label>
+        <select name="rating" required style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff">
+          <option value="">Select Rating</option>
+          <option value="5">5 ⭐ Excellent</option>
+          <option value="4">4 ⭐ Very Good</option>
+          <option value="3">3 ⭐ Good</option>
+          <option value="2">2 ⭐ Fair</option>
+          <option value="1">1 ⭐ Poor</option>
+        </select>
+
+        <label style="display:block;margin:8px 0 4px">Comments</label>
+        <textarea name="comments" rows="4" placeholder="Your feedback here..." style="width:100%;padding:8px;border-radius:6px;border:1px solid var(--gold-soft);background:#07120f;color:#fff"></textarea>
+
+        <button type="submit" class="btn" style="margin-top:12px;width:100%;">Submit Feedback</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</section>
+
+  </section>
+
+  <footer>
+    © 2025 Pure Moonlight Café — Crafted with care. Menu subject to seasonal changes.
+  </footer>
+
+</body>
+</html>
